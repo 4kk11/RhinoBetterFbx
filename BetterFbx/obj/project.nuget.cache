@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "dYemFIXkvf0A2nSj38HRbd7pTpbLahdEXwtDU7R9OeJ2n6N/DiM4kFHi5O9f6whaDmEv0R+bEsA7vB2CMaUpTQ==",
+  "success": true,
+  "projectFilePath": "D:\\home\\GH_Plugins\\BetterFbx\\BetterFbx\\BetterFbx.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\akiak\\.nuget\\packages\\grasshopper\\7.13.21348.13001\\grasshopper.7.13.21348.13001.nupkg.sha512",
+    "C:\\Users\\akiak\\.nuget\\packages\\rhinocommon\\7.13.21348.13001\\rhinocommon.7.13.21348.13001.nupkg.sha512"
+  ],
+  "logs": []
+}

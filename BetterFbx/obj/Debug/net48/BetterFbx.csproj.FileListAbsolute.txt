@@ -1,0 +1,9 @@
+D:\home\GH_Plugins\BetterFbx\BetterFbx\bin\Debug\net48\BetterFbx.gha
+D:\home\GH_Plugins\BetterFbx\BetterFbx\bin\Debug\net48\BetterFbx.pdb
+D:\home\GH_Plugins\BetterFbx\BetterFbx\obj\Debug\net48\BetterFbx.GeneratedMSBuildEditorConfig.editorconfig
+D:\home\GH_Plugins\BetterFbx\BetterFbx\obj\Debug\net48\BetterFbx.AssemblyInfoInputs.cache
+D:\home\GH_Plugins\BetterFbx\BetterFbx\obj\Debug\net48\BetterFbx.AssemblyInfo.cs
+D:\home\GH_Plugins\BetterFbx\BetterFbx\obj\Debug\net48\BetterFbx.csproj.CoreCompileInputs.cache
+D:\home\GH_Plugins\BetterFbx\BetterFbx\obj\Debug\net48\BetterFbx.gha
+D:\home\GH_Plugins\BetterFbx\BetterFbx\obj\Debug\net48\BetterFbx.pdb
+D:\home\GH_Plugins\BetterFbx\BetterFbx\obj\Debug\net48\BetterFbx.csproj.AssemblyReference.cache
