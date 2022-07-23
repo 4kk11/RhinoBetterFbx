@@ -1,6 +1,7 @@
 using Grasshopper;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
+using Rhino.Geometry.Collections;
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
@@ -14,28 +15,58 @@ namespace BetterFbx
 
 		public BetterFbxComponent() : base("BetterFbx", "BetterFbx", "Description", "MyTools", "BetterFbx")
 		{
+			
 		}
 
 
 		protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
 		{
-			pManager.AddBooleanParameter("button", "button", "", GH_ParamAccess.item);
+			pManager.AddScriptVariableParameter("guid", "guid", "", GH_ParamAccess.item);
+			//pManager.AddBooleanParameter("button", "button", "", GH_ParamAccess.item);
+			pManager[0].Optional = true;
+			//pManager[1].Optional = true;
 		}
 
 
 		protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
 		{
+			pManager.AddGenericParameter("vertices", "vertices", "", GH_ParamAccess.list);
+			pManager.AddGenericParameter("faces", "faces", "", GH_ParamAccess.list);
 		}
 
+		public MeshVertexList vertices { get; private set; }
+		public MeshFaceList faces { get; private set; }
 
+		public MeshVertexNormalList vNormals { get; private set; }
+		public MeshFaceNormalList fNormals { get; private set; }
+		
 		protected override void SolveInstance(IGH_DataAccess DA)
 		{
+			/*
 			bool button = false;
 			DA.GetData("button", ref button);
 			if (button)
 			{
 				Program_test.test();
-			}
+			}*/
+
+			//Get mesh object from RhinoDocument.
+			Guid id = default(Guid);
+			DA.GetData("guid", ref id);
+			var doc = Rhino.RhinoDoc.ActiveDoc;
+			Mesh mesh = doc.Objects.Find(id)?.Geometry as Mesh;
+			if (mesh == null) return;
+			
+
+			//Get mesh info.
+			vertices = mesh.Vertices;
+			faces = mesh.Faces;
+			vNormals = mesh.Normals;
+			fNormals = mesh.FaceNormals;
+
+			//Set output.
+			DA.SetDataList(0, vertices);
+			DA.SetDataList(1, faces);
 		}
 
 
@@ -56,6 +87,18 @@ namespace BetterFbx
 			SetNum(2);
 			int retNum = GetNum();
 			MessageBox.Show(retNum.ToString());
+		}
+
+		static public void CreateFbxNode(Mesh mesh)
+		{
+			MeshVertexList vertices = mesh.Vertices;
+			MeshFaceList faces = mesh.Faces;
+			MeshVertexNormalList vNormals = mesh.Normals;
+			MeshFaceNormalList fNormals = mesh.FaceNormals;
+			int vCount = vertices.Count;
+			int fCount = faces.Count;
+
+
 		}
 	}
 }
