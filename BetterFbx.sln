@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32510.428
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterFbx", "BetterFbx\BetterFbx.csproj", "{9A8C62F0-B79B-4EC2-AB4A-EB18E135E95C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterFbx", "BetterFbx\BetterFbx.csproj", "{9A8C62F0-B79B-4EC2-AB4A-EB18E135E95C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BetterFbxLibrary", "BetterFbxLibrary\BetterFbxLibrary.vcxproj", "{01693AC1-213D-44CB-AE25-9A952D002CCC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BetterFbxLib", "BetterFbxLib\BetterFbxLib.vcxproj", "{4E380D24-9903-44D0-AAC2-5DFB178C8453}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,16 +29,14 @@ Global
 		{9A8C62F0-B79B-4EC2-AB4A-EB18E135E95C}.Release|x64.Build.0 = Release|Any CPU
 		{9A8C62F0-B79B-4EC2-AB4A-EB18E135E95C}.Release|x86.ActiveCfg = Release|Any CPU
 		{9A8C62F0-B79B-4EC2-AB4A-EB18E135E95C}.Release|x86.Build.0 = Release|Any CPU
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Debug|x64.ActiveCfg = Debug|x64
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Debug|x64.Build.0 = Debug|x64
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Debug|x86.ActiveCfg = Debug|Win32
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Debug|x86.Build.0 = Debug|Win32
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Release|Any CPU.ActiveCfg = Release|Win32
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Release|x64.ActiveCfg = Release|x64
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Release|x64.Build.0 = Release|x64
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Release|x86.ActiveCfg = Release|Win32
-		{01693AC1-213D-44CB-AE25-9A952D002CCC}.Release|x86.Build.0 = Release|Win32
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Debug|x64.ActiveCfg = Debug|x64
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Debug|x64.Build.0 = Debug|x64
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Debug|x86.ActiveCfg = Debug|x64
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Release|Any CPU.ActiveCfg = Release|x64
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Release|x64.ActiveCfg = Release|x64
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Release|x64.Build.0 = Release|x64
+		{4E380D24-9903-44D0-AAC2-5DFB178C8453}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

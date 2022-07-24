@@ -1,0 +1,10 @@
+﻿D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output ディレクトリの末尾がスラッシュではありません。Output ディレクトリが適切に評価されるようにするために、このビルド インスタンスによってスラッシュが追加されます。
+  stdafx.cpp
+C:\Program Files\Rhino 7 SDK\opennurbs\opennurbs_material.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files\Rhino 7 SDK\opennurbs\opennurbs_dimensionstyle.h(1809,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+   --- Rhino C++ component links with libs in "C:/Program Files/Rhino 7 SDK/Lib/Release"
+  BetterFbxLib.cpp
+  BetterFbxLibApp.cpp
+  コードを生成中...
+     ライブラリ D:\home\GH_Plugins\BetterFbx\\BetterFbx\bin\Release\net48\BetterFbxLib.lib とオブジェクト D:\home\GH_Plugins\BetterFbx\\BetterFbx\bin\Release\net48\BetterFbxLib.exp を作成中
+  BetterFbxLib.vcxproj -> D:\home\GH_Plugins\BetterFbx\BetterFbx\bin\Release\net48\BetterFbxLib.dll

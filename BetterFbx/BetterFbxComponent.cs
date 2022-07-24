@@ -22,9 +22,9 @@ namespace BetterFbx
 		protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
 		{
 			pManager.AddScriptVariableParameter("guid", "guid", "", GH_ParamAccess.item);
-			//pManager.AddBooleanParameter("button", "button", "", GH_ParamAccess.item);
+			pManager.AddBooleanParameter("button", "button", "", GH_ParamAccess.item);
 			pManager[0].Optional = true;
-			//pManager[1].Optional = true;
+			pManager[1].Optional = true;
 		}
 
 
@@ -42,13 +42,13 @@ namespace BetterFbx
 		
 		protected override void SolveInstance(IGH_DataAccess DA)
 		{
-			/*
+			
 			bool button = false;
 			DA.GetData("button", ref button);
 			if (button)
 			{
 				Program_test.test();
-			}*/
+			}
 
 			//Get mesh object from RhinoDocument.
 			Guid id = default(Guid);
@@ -77,9 +77,9 @@ namespace BetterFbx
 
 	internal class Program_test
 	{
-		[DllImport("BetterFbxLibrary.dll")]
+		[DllImport("BetterFbxLib.dll")]
 		static extern void SetNum(int n);
-		[DllImport("BetterFbxLibrary.dll")]
+		[DllImport("BetterFbxLib.dll")]
 		static extern int GetNum();
 
 		static public void test()
