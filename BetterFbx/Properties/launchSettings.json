@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BetterFbx": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

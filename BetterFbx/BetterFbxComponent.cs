@@ -4,7 +4,11 @@ using Rhino.Geometry;
 using Rhino.Geometry.Collections;
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Collections.Generic;
+using Rhino.Runtime;
+using Rhino.DocObjects;
+
 using System.Windows.Forms;
 
 namespace BetterFbx
@@ -32,6 +36,7 @@ namespace BetterFbx
 		{
 			pManager.AddGenericParameter("vertices", "vertices", "", GH_ParamAccess.list);
 			pManager.AddGenericParameter("faces", "faces", "", GH_ParamAccess.list);
+			pManager.AddPointParameter("out", "out", "", GH_ParamAccess.list);
 		}
 
 		public MeshVertexList vertices { get; private set; }
@@ -43,13 +48,6 @@ namespace BetterFbx
 		protected override void SolveInstance(IGH_DataAccess DA)
 		{
 			
-			bool button = false;
-			DA.GetData("button", ref button);
-			if (button)
-			{
-				Program_test.test();
-			}
-
 			//Get mesh object from RhinoDocument.
 			Guid id = default(Guid);
 			DA.GetData("guid", ref id);
@@ -67,6 +65,17 @@ namespace BetterFbx
 			//Set output.
 			DA.SetDataList(0, vertices);
 			DA.SetDataList(1, faces);
+
+			bool button = false;
+			DA.GetData("button", ref button);
+			if (button)
+			{
+
+				//Point3d[] pts = Program_test.UnsafeNativeMethods.test(mesh);
+				//DA.SetDataList(2, pts);
+				//DA.SetData(2, pts);
+				Program_test.UnsafeNativeMethods.test_2(mesh);
+			}
 		}
 
 
@@ -77,18 +86,45 @@ namespace BetterFbx
 
 	internal class Program_test
 	{
-		[DllImport("BetterFbxLib.dll")]
-		static extern void SetNum(int n);
-		[DllImport("BetterFbxLib.dll")]
-		static extern int GetNum();
-
-		static public void test()
+		public static class UnsafeNativeMethods
 		{
-			SetNum(2);
-			int retNum = GetNum();
-			MessageBox.Show(retNum.ToString());
-		}
+			[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+			static extern void CreateManager();
+			[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+			static extern void DeleteManager();
+			[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+			static extern void ExportFBX();
+			[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+			static extern int GetvCount(IntPtr pts);
+			[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+			static extern void CreateNode(IntPtr pMesh);
 
+			static public Point3d[] test(Mesh mesh)
+			{
+				IntPtr inPtr = Interop.NativeGeometryConstPointer(mesh);
+
+				//SetMesh(inPtr);
+
+				var points_array = new Rhino.Runtime.InteropWrappers.SimpleArrayPoint3d();
+				var ptr_points_array = points_array.NonConstPointer();
+
+				int Num = GetvCount(ptr_points_array);
+
+				Point3d[] pts = points_array.ToArray();
+				points_array.Dispose();
+				//MessageBox.Show(retNum.ToString());
+				return pts;
+			}
+
+			static public void test_2(Mesh mesh)
+			{
+				IntPtr inPtr = Interop.NativeGeometryConstPointer(mesh);
+				CreateManager();
+				CreateNode(inPtr);
+				ExportFBX();
+				DeleteManager();
+			}
+		}
 		static public void CreateFbxNode(Mesh mesh)
 		{
 			MeshVertexList vertices = mesh.Vertices;

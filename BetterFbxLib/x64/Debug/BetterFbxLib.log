@@ -6,6 +6,7 @@ D:\home\GH_Plugins\BetterFbx\BetterFbxLib\stdafx.h(81,1): warning C4005: '_DEBUG
 D:\home\GH_Plugins\BetterFbx\BetterFbxLib\stdafx.cpp : message : '_DEBUG' の以前の定義を確認してください
    --- Rhino C++ component links with libs in "C:/Program Files/Rhino 7 SDK/Lib/Release"
   BetterFbxLib.cpp
+D:\home\GH_Plugins\BetterFbx\BetterFbxLib\BetterFbxLib.cpp(69,16): warning C4189: 'vertX': ローカル変数が初期化されましたが、参照されていません
   BetterFbxLibApp.cpp
   コードを生成中...
      ライブラリ D:\home\GH_Plugins\BetterFbx\\BetterFbx\bin\Debug\net48\BetterFbxLib.lib とオブジェクト D:\home\GH_Plugins\BetterFbx\\BetterFbx\bin\Debug\net48\BetterFbxLib.exp を作成中
