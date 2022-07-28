@@ -11,5 +11,5 @@ extern "C"
     __declspec(dllexport) void DeleteManager();
     __declspec(dllexport) void ExportFBX();
     __declspec(dllexport) int GetvCount(ON_3dPointArray* pts);
-    __declspec(dllexport) void CreateNode(const ON_Mesh* pMesh);
+    __declspec(dllexport) void CreateNode(const ON_Mesh* pMesh, const ON_SimpleArray<ON_wString>* layerNames);
 }

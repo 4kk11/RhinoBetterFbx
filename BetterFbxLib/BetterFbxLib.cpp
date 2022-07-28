@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 #include "stdafx.h"
 #include "BetterFbxLib.h"
 
@@ -44,7 +45,7 @@ int GetvCount(ON_3dPointArray* pts)
 }
 
 
-void CreateNode(const ON_Mesh* pMesh)
+void CreateNode(const ON_Mesh* pMesh, const ON_SimpleArray<ON_wString>* layerNames)
 {
     if (!pMesh) return;
 
@@ -62,7 +63,8 @@ void CreateNode(const ON_Mesh* pMesh)
     IMesh->InitControlPoints(vCount);
     FbxVector4* fbx_vertices = IMesh->GetControlPoints();
     FbxGeometryElementNormal* fbx_vNormals = IMesh->CreateElementNormal();
-    
+    fbx_vNormals->SetMappingMode(FbxGeometryElement::eByControlPoint);
+    fbx_vNormals->SetReferenceMode(FbxGeometryElement::eDirect);
     for (int i=0; i < vCount; i++)
     {
         //convert to fbxsdk class and Set
@@ -92,8 +94,43 @@ void CreateNode(const ON_Mesh* pMesh)
     }
 
     //Create Node & Set Mesh
-    FbxNode* INode = FbxNode::Create(scene, "test_node");
-    INode->SetNodeAttribute(IMesh);
+    FbxNode* rootNode = scene->GetRootNode();
+    FbxNode* currentNode = rootNode;
+    int nodeCount = layerNames->Count();
+    for (int i = 0; i < nodeCount; i++)
+    {
+        const wchar_t* name = layerNames->At(i)->Array();
+        /*
+        size_t ksize = layerNames->At(i)->Length()*6 + 1;
+        char* _name = new char[ksize];
+        size_t len = wcstombs(_name, name, ksize);
+        */
+        size_t nameSize = (wcslen(name) + 1) * 4;
+        char* _name = new char[nameSize];
+        WideCharToMultiByte(CP_UTF8, 0, name, -1, _name, (int)nameSize, NULL, NULL);
+        FbxNode* nextNode = currentNode->FindChild(_name);
+        if (nextNode == nullptr)
+        {
+            nextNode = FbxNode::Create(scene, _name);
+            currentNode->AddChild(nextNode);
+            currentNode = nextNode;
+        }
+        else
+        {
+            currentNode = nextNode;
+        }
+        delete[] _name;
+        _name = nullptr;
+    }
     
-    scene->GetRootNode()->AddChild(INode);
+    wchar_t* text = L"オブジェクト名表";
+    size_t size = (wcslen(text) + 1) * 4;
+    char* _text = new char[size];
+    WideCharToMultiByte(CP_UTF8, 0, text, -1, _text, (int)size, NULL, NULL);
+    FbxNode* INode = FbxNode::Create(scene, _text);
+    delete[] _text;
+    INode->SetNodeAttribute(IMesh);
+    currentNode->AddChild(INode);
+    
+    //scene->GetRootNode()->AddChild(layer);
 }
