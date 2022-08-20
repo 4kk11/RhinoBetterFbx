@@ -11,5 +11,8 @@ extern "C"
     __declspec(dllexport) void DeleteManager();
     __declspec(dllexport) void ExportFBX();
     __declspec(dllexport) int GetvCount(ON_3dPointArray* pts);
-    __declspec(dllexport) void CreateNode(const ON_Mesh* pMesh, const ON_SimpleArray<ON_wString>* layerNames);
+    //__declspec(dllexport) void CreateNode(const ON_Mesh* pMesh, const ON_SimpleArray<ON_wString>* layerNames, const wchar_t* objectName);
+    __declspec(dllexport) void CreateNode(const CRhinoObject* rhinoObject, const ON_SimpleArray<ON_wString>* layerNames, const wchar_t* objectName);
+
+    static const ON_MappingRef* GetValidMappingRef(const CRhinoObject* pObject, bool withChannels);
 }

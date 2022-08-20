@@ -58,6 +58,7 @@ namespace BetterFbx
 
 			//Get mesh
 			Mesh mesh = rhinoObject.Geometry as Mesh;
+			if (mesh == null) return;
 			vertices = mesh.Vertices;
 			faces = mesh.Faces;
 			vNormals = mesh.Normals;
@@ -67,14 +68,15 @@ namespace BetterFbx
 
 			//Get Layer
 			string[] layerNames = ExtractObject.GetParentLayerNames(doc, rhinoObject);
-
+			string objectName = ExtractObject.GetObjectName(doc, rhinoObject);
 
 			bool button = false;
 			DA.GetData("button", ref button);
 			if (button)
 			{
 
-				ExportMeshFBX(mesh, layerNames);
+				//ExportMeshFBX(mesh, layerNames, objectName);
+				ExportMeshFBX(rhinoObject, layerNames, objectName);
 			}
 		}
 
@@ -83,9 +85,11 @@ namespace BetterFbx
 
 		public override Guid ComponentGuid => new Guid("4F20AB28-A245-4971-91F6-B52F7E15D506");
 
-		static public void ExportMeshFBX(Mesh mesh, string[] layerNames)
+
+		static public void ExportMeshFBX(RhinoObject ro, string[] layerNames, string objectName)
 		{
-			IntPtr pMesh = Interop.NativeGeometryConstPointer(mesh);
+			IntPtr pro = Interop.RhinoObjectConstPointer(ro);
+
 			var string_array = new Rhino.Runtime.InteropWrappers.ClassArrayString();
 			foreach (string str in layerNames)
 			{
@@ -93,13 +97,12 @@ namespace BetterFbx
 			}
 			IntPtr pLayerNames = string_array.ConstPointer();
 			UnsafeNativeMethods.CreateManager();
-			UnsafeNativeMethods.CreateNode(pMesh, pLayerNames);
+			UnsafeNativeMethods.CreateNode(pro, pLayerNames, objectName);
 			UnsafeNativeMethods.ExportFBX();
 			UnsafeNativeMethods.DeleteManager();
 
 			string_array.Dispose();
 		}
-
 
 	}
 

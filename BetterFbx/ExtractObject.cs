@@ -27,5 +27,14 @@ namespace BetterFbx
 			Guid parentId = nowLayer.ParentLayerId;
 			if (parentId != Guid.Empty) GetParentLayerNames_Recursion(parentId, layerNames);
 		}
+
+		public static string GetObjectName(RhinoDoc doc, RhinoObject ro)
+		{
+			if (ro.Name == null)
+			{
+				return "object";
+			}
+			return ro.Name;
+		}
 	}
 }
