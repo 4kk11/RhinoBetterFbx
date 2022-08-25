@@ -1,13 +1,13 @@
 ﻿D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output ディレクトリの末尾がスラッシュではありません。Output ディレクトリが適切に評価されるようにするために、このビルド インスタンスによってスラッシュが追加されます。
-  stdafx.cpp
+  BetterFbxLibApp.cpp
 C:\Program Files\Rhino 7 SDK\opennurbs\opennurbs_material.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Program Files\Rhino 7 SDK\opennurbs\opennurbs_dimensionstyle.h(1809,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 D:\home\GH_Plugins\BetterFbx\BetterFbxLib\stdafx.h(81,1): warning C4005: '_DEBUG': マクロが再定義されました。
-D:\home\GH_Plugins\BetterFbx\BetterFbxLib\stdafx.cpp : message : '_DEBUG' の以前の定義を確認してください
+D:\home\GH_Plugins\BetterFbx\BetterFbxLib\BetterFbxLibApp.cpp : message : '_DEBUG' の以前の定義を確認してください
    --- Rhino C++ component links with libs in "C:/Program Files/Rhino 7 SDK/Lib/Release"
   BetterFbxLib.cpp
-D:\home\GH_Plugins\BetterFbx\BetterFbxLib\BetterFbxLib.cpp(83,16): warning C4189: 'vertX': ローカル変数が初期化されましたが、参照されていません
-  BetterFbxLibApp.cpp
+  FbxOperator.cpp
+D:\home\GH_Plugins\BetterFbx\BetterFbxLib\FbxOperator.cpp(24,16): warning C4189: 'vertX': ローカル変数が初期化されましたが、参照されていません
   コードを生成中...
      ライブラリ D:\home\GH_Plugins\BetterFbx\\BetterFbx\bin\Debug\net48\BetterFbxLib.lib とオブジェクト D:\home\GH_Plugins\BetterFbx\\BetterFbx\bin\Debug\net48\BetterFbxLib.exp を作成中
   BetterFbxLib.vcxproj -> D:\home\GH_Plugins\BetterFbx\BetterFbx\bin\Debug\net48\BetterFbxLib.dll

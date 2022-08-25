@@ -98,7 +98,7 @@ namespace BetterFbx
 			IntPtr pLayerNames = string_array.ConstPointer();
 			UnsafeNativeMethods.CreateManager();
 			UnsafeNativeMethods.CreateNode(pro, pLayerNames, objectName);
-			UnsafeNativeMethods.ExportFBX();
+			UnsafeNativeMethods.ExportFBX(false);
 			UnsafeNativeMethods.DeleteManager();
 
 			string_array.Dispose();
