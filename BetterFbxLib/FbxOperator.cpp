@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "FbxOperator.h"
+#include <stack>
 
 
 void SetUpFbxMesh_Vertices(FbxMesh* pFbxMesh, const ON_Mesh* pRhinoMesh)
@@ -189,6 +190,54 @@ void CreateTexture(FbxScene* scene, FbxSurfacePhong* IMaterial , const ON_Materi
         delete[] texName;
         texName = nullptr;
     }
+}
+
+FbxNode* SetUpFbxNode_RhinoLayers(FbxScene* scene, const CRhinoObject* pRhinoObject)
+{
+    //get layerTable from RhinoDoc
+    CRhinoDoc* doc = pRhinoObject->Document();
+    const CRhinoLayerTable& layerTable = doc->m_layer_table;
+
+    //get object layer Index
+    int layerIndex = pRhinoObject->Attributes().m_layer_index;
+
+    //get parent layer names
+    std::stack<const wchar_t*> stack;
+    for (int i = 0; layerIndex != -1; ++i)
+    {
+        const CRhinoLayer& layer = layerTable[layerIndex];
+
+        const wchar_t* wlayerName = layer.Name().Array();
+        stack.push(wlayerName);
+
+        ON_UUID parentLayerId = layer.ParentId();
+        int parentLayerIndex = layerTable.FindLayerFromId(parentLayerId, true, false, -1);
+
+        layerIndex = parentLayerIndex;
+    }
+
+    //get terminal node (make it if it doesnt exist)
+    FbxNode* rootNode = scene->GetRootNode();
+    FbxNode* terminalNode = rootNode;
+    for (int j = 0; !stack.empty(); ++j)
+    {
+        const wchar_t* wlayerName = stack.top();
+        char* layerName = wStringToChar(wlayerName);
+        FbxNode* nextNode = terminalNode->FindChild(layerName);
+        if (nextNode == nullptr)
+        {
+            nextNode = FbxNode::Create(scene, layerName);
+            terminalNode->AddChild(nextNode);
+        }
+        
+        terminalNode = nextNode;
+        delete[] layerName;
+        layerName = nullptr;
+        stack.pop();
+    }
+
+    return terminalNode;
+    
 }
 
 char* wStringToChar(const wchar_t* wchar)

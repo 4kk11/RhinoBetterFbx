@@ -34,7 +34,7 @@ namespace BetterFbx
 			var points_array = new Rhino.Runtime.InteropWrappers.SimpleArrayPoint3d();
 			var ptr_points_array = points_array.NonConstPointer();
 
-			int Num = GetvCount(ptr_points_array);
+			int vNum = GetvCount(ptr_points_array);
 
 			Point3d[] pts = points_array.ToArray();
 			points_array.Dispose();

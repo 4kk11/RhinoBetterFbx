@@ -88,48 +88,25 @@ void CreateNode(const CRhinoObject* pRhinoObject, const ON_SimpleArray<ON_wStrin
     FbxSurfaceMaterial* IMaterial = CreateMaterial(scene, onMaterial);
 
     //Create Node & Set Mesh
-    FbxNode* rootNode = scene->GetRootNode();
-    FbxNode* currentNode = rootNode;
-    int nodeCount = layerNames->Count();
-    for (int i = 0; i < nodeCount; i++)
-    {
-        char* _name = wStringToChar(layerNames->At(i)->Array());
-        FbxNode* nextNode = currentNode->FindChild(_name);
-        if (nextNode == nullptr)
-        {
-            nextNode = FbxNode::Create(scene, _name);
-            currentNode->AddChild(nextNode);
-            currentNode = nextNode;
-        }
-        else
-        {
-            currentNode = nextNode;
-        }
-        delete[] _name;
-        _name = nullptr;
-    }
-    
+    FbxNode* terminalNode = SetUpFbxNode_RhinoLayers(scene, pRhinoObject);
 
 
     /// オブジェクト名を拾う
     char* _text = wStringToChar(objectName);
-    /// 末端のノードを作成し、メッシュを格納する
-    FbxNode* INode = FbxNode::Create(scene, _text);
+    /// ノードを作成し、メッシュを格納する
+    FbxNode* meshNode = FbxNode::Create(scene, _text);
     delete[] _text;
     _text = nullptr;
-    INode->SetNodeAttribute(IMesh);
-    INode->AddMaterial(IMaterial); //SetMaterial
-    currentNode->AddChild(INode);
+    meshNode->SetNodeAttribute(IMesh);
+    meshNode->AddMaterial(IMaterial); //SetMaterial
     
-
     //Custom properties
-    FbxPropertyT<FbxString> IProperty = FbxProperty::Create(INode, FbxStringDT, "PropOnNode");
+    FbxPropertyT<FbxString> IProperty = FbxProperty::Create(meshNode, FbxStringDT, "PropOnNode");
     IProperty.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
     IProperty.ModifyFlag(FbxPropertyFlags::eAnimatable, true);
     IProperty.Set("test prop");
 
-    
-    
+    terminalNode->AddChild(meshNode);
 }
 
 
