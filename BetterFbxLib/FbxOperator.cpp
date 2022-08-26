@@ -129,15 +129,18 @@ FbxSurfacePhong* CreateMaterial(FbxScene* scene, const ON_Material& onMaterial)
     IMaterial->SpecularFactor.Set(0.3);
     IMaterial->ShadingModel.Set("Phong");
 
-    delete[] matName;
-    matName = nullptr;
+    if (matName)
+    {
+        delete[] matName;
+        matName = nullptr;
+    }
 
     CreateTexture(scene, IMaterial, onMaterial);
 
     return IMaterial;
 }
 
-void CreateTexture(FbxScene* scene, FbxSurfacePhong* IMaterial , const ON_Material& onMaterial)
+void CreateTexture(FbxScene* scene, FbxSurfacePhong* fbxMaterial , const ON_Material& onMaterial)
 {
     ON_ObjectArray<ON_Texture> textures = onMaterial.m_textures;
     for (int i = 0; i < textures.Count(); ++i)
@@ -171,24 +174,28 @@ void CreateTexture(FbxScene* scene, FbxSurfacePhong* IMaterial , const ON_Materi
         ITexture->SetScale(1.0, 1.0);
         ITexture->SetRotation(0.0, 0.0);
 
-        if (IMaterial)
+        if (fbxMaterial)
         {
             if (tex.m_type == ON_Texture::TYPE::diffuse_texture)
             {
-                IMaterial->Diffuse.ConnectSrcObject(ITexture);
+                fbxMaterial->Diffuse.ConnectSrcObject(ITexture);
             }
             else if (tex.m_type == ON_Texture::TYPE::bump_texture)
             {
-                IMaterial->Bump.ConnectSrcObject(ITexture);
+                fbxMaterial->Bump.ConnectSrcObject(ITexture);
             }
             else if (tex.m_type == ON_Texture::TYPE::opacity_texture)
             {
-                IMaterial->Ambient.ConnectSrcObject(ITexture);
+                fbxMaterial->Ambient.ConnectSrcObject(ITexture);
             }
             else continue;
         }
-        delete[] texName;
-        texName = nullptr;
+
+        if (texName)
+        {
+            delete[] texName;
+            texName = nullptr;
+        }
     }
 }
 
@@ -231,8 +238,11 @@ FbxNode* SetUpFbxNode_RhinoLayers(FbxScene* scene, const CRhinoObject* pRhinoObj
         }
         
         terminalNode = nextNode;
-        delete[] layerName;
-        layerName = nullptr;
+        if (layerName)
+        {
+            delete[] layerName;
+            layerName = nullptr;
+        }
         stack.pop();
     }
 
@@ -240,14 +250,39 @@ FbxNode* SetUpFbxNode_RhinoLayers(FbxScene* scene, const CRhinoObject* pRhinoObj
     
 }
 
+FbxNode* SetupFbxNode_MeshNode(FbxScene* scene, const CRhinoObject* pRhinoObject, FbxMesh* fbxMesh)
+{
+    //get rhinoObject name
+    const wchar_t* wObjectName = pRhinoObject->Name().Array();
+    if (!wObjectName) wObjectName = L"object";
+    char* objectName = wStringToChar(wObjectName);
+
+    //create meshNode
+    FbxNode* meshNode = FbxNode::Create(scene, objectName);
+
+    if (objectName)
+    {
+        delete[] objectName;
+        objectName = nullptr;
+    }
+
+    //set fbxMesh and fbxMat to meshNode
+    meshNode->SetNodeAttribute(fbxMesh);
+
+    return meshNode;
+}
+
 char* wStringToChar(const wchar_t* wchar)
 {
+    if (!wchar) return nullptr;
     size_t nameSize = (wcslen(wchar) + 1) * 4;
     char* _char = new char[nameSize];
     //ワイド文字列(unicode 2バイト)からマルチバイト文字列(utf-8)(日本語を加味して4バイト取っておく)に変換
     WideCharToMultiByte(CP_UTF8, 0, wchar, -1, _char, (int)nameSize, NULL, NULL);
     return _char;
 }
+
+
 
 static const ON_MappingRef* GetValidMappingRef(const CRhinoObject* pObject, bool withChannels)
 {

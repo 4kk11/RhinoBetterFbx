@@ -70,35 +70,29 @@ int GetvCount(ON_3dPointArray* pts)
     return vCount;
 }
 
-void CreateNode(const CRhinoObject* pRhinoObject, const ON_SimpleArray<ON_wString>* layerNames, const wchar_t* objectName)
+void CreateNode(const CRhinoObject* pRhinoObject)
 {
     if (pRhinoObject == NULL) return;
 
-    const ON_Mesh* pMesh = dynamic_cast<const ON_Mesh*>(pRhinoObject->Geometry());
-    if (!pMesh) return;
+    const ON_Mesh* rhinoMesh = dynamic_cast<const ON_Mesh*>(pRhinoObject->Geometry());
+    if (!rhinoMesh) return;
 
     //Create FbxMesh
-    FbxMesh* IMesh = FbxMesh::Create(scene, "test_mesh");
-    SetUpFbxMesh_Vertices(IMesh, pMesh);
-    SetUpFbxMesh_UV(IMesh, pMesh, pRhinoObject);
-    SetUpFbxMesh_Faces(IMesh, pMesh);
+    FbxMesh* fbxMesh = FbxMesh::Create(scene, "mesh");
+    SetUpFbxMesh_Vertices(fbxMesh, rhinoMesh);
+    SetUpFbxMesh_UV(fbxMesh, rhinoMesh, pRhinoObject);
+    SetUpFbxMesh_Faces(fbxMesh, rhinoMesh);
 
-    //Create Material
-    const ON_Material onMaterial = pRhinoObject->ObjectMaterial();
-    FbxSurfaceMaterial* IMaterial = CreateMaterial(scene, onMaterial);
+    //Create Material 
+    const ON_Material rhinoMaterial = pRhinoObject->ObjectMaterial();
+    FbxSurfaceMaterial* fbxMaterial = CreateMaterial(scene, rhinoMaterial); //TODO: share material
 
-    //Create Node & Set Mesh
+    //Create LayerNode
     FbxNode* terminalNode = SetUpFbxNode_RhinoLayers(scene, pRhinoObject);
 
-
-    /// オブジェクト名を拾う
-    char* _text = wStringToChar(objectName);
-    /// ノードを作成し、メッシュを格納する
-    FbxNode* meshNode = FbxNode::Create(scene, _text);
-    delete[] _text;
-    _text = nullptr;
-    meshNode->SetNodeAttribute(IMesh);
-    meshNode->AddMaterial(IMaterial); //SetMaterial
+    //Create MeshNode
+    FbxNode* meshNode = SetupFbxNode_MeshNode(scene, pRhinoObject, fbxMesh);
+    meshNode->AddMaterial(fbxMaterial); //SetMaterial
     
     //Custom properties
     FbxPropertyT<FbxString> IProperty = FbxProperty::Create(meshNode, FbxStringDT, "PropOnNode");
