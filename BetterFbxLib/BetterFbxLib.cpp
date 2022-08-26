@@ -52,23 +52,6 @@ void ExportFBX(bool isAscii)
     IExporter->Destroy();
 }
 
-int GetvCount(ON_3dPointArray* pts)
-{
-    //FbxManager* fbx_manager = FbxManager::Create();
-    //fbx_manager->Destroy();
-    
-    //pts[0] = mesh->m_V[0];
-    //pts[1] = mesh->m_V[1];
-    int vCount = mesh->VertexCount();
-    //const ON_3fPoint* _pts = mesh->m_V.Array();
-    
-    ON_3dPointArray _pts = mesh->DoublePrecisionVertices();
-    
-    pts->Append(_pts.Count(), _pts.Array());
-    
-    
-    return vCount;
-}
 
 void CreateNode(const CRhinoObject* pRhinoObject)
 {
@@ -95,10 +78,7 @@ void CreateNode(const CRhinoObject* pRhinoObject)
     meshNode->AddMaterial(fbxMaterial); //SetMaterial
     
     //Custom properties
-    FbxPropertyT<FbxString> IProperty = FbxProperty::Create(meshNode, FbxStringDT, "PropOnNode");
-    IProperty.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
-    IProperty.ModifyFlag(FbxPropertyFlags::eAnimatable, true);
-    IProperty.Set("test prop");
+    AddCustomProperty_FromRhino(meshNode, pRhinoObject);
 
     terminalNode->AddChild(meshNode);
 }

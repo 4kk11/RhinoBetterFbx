@@ -272,6 +272,50 @@ FbxNode* SetupFbxNode_MeshNode(FbxScene* scene, const CRhinoObject* pRhinoObject
     return meshNode;
 }
 
+void AddCustomProperty_FromRhino(FbxNode* node, const CRhinoObject* pRhinoObject)
+{
+    CRhinoObjectAttributes att = pRhinoObject->Attributes();
+    int usCount = att.UserStringCount();
+    if (usCount == 0)  return;
+
+    ON_ClassArray<ON_wString> keys;
+    att.GetUserStringKeys(keys);
+
+    for (int i = 0; i < usCount; ++i)
+    {
+        //get value
+        ON_wString onwstr;
+        wchar_t* key_w = keys.At(i)->Array();
+        att.GetUserString(key_w, onwstr);
+        wchar_t* value_w = onwstr.Array();
+        //change wchar to char
+        const char* key = wStringToChar(key_w);
+        const char* value = wStringToChar(value_w);
+
+        //create userdef property
+        FbxPropertyT<FbxString> fbxProperty = FbxProperty::Create(node, FbxStringDT, key);
+        fbxProperty.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
+        fbxProperty.ModifyFlag(FbxPropertyFlags::eAnimatable, true);
+        fbxProperty.Set(value);
+
+        if (key)
+        {
+            delete[] key;
+            key = nullptr;
+        }
+        if (value)
+        {
+            delete[] value;
+            value = nullptr;
+        }
+    }
+    
+
+
+
+}
+
+
 char* wStringToChar(const wchar_t* wchar)
 {
     if (!wchar) return nullptr;
