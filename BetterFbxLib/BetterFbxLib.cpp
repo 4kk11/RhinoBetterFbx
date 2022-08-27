@@ -22,7 +22,7 @@ void DeleteManager()
     manager = nullptr;
 }
 
-void ExportFBX(bool isAscii)
+void ExportFBX(bool isAscii, int axisSelect)
 {
     int pFileFormat = manager->GetIOPluginRegistry()->GetNativeWriterFormat();
 
@@ -43,6 +43,54 @@ void ExportFBX(bool isAscii)
             }
         }
     }
+
+    //default of rhino, blender (z-up, righthand)
+    
+    FbxAxisSystem axisSystem = FbxAxisSystem::Max;
+
+    switch (axisSelect)
+    {
+        case 0:
+            axisSystem = FbxAxisSystem::Max; // ZAxis, -ParityOdd, RightHanded.
+            break;
+        case 1:
+            axisSystem = FbxAxisSystem::Motionbuilder; // YAxis, ParityOdd, RightHanded.
+            break;
+        case 2:
+            axisSystem = FbxAxisSystem::DirectX; // YAxis, ParityOdd, LeftHanded.
+            break;
+        default:
+            axisSystem = FbxAxisSystem::Max;
+            break;
+    }
+    
+    //TODO: cover more freedom AxisSystem
+    /*
+    bool is_Yup = false;
+    bool is_Left = false;
+    int uvecSign = 1;
+    int fvecSign = 1;
+
+    FbxAxisSystem::EUpVector upvec = FbxAxisSystem::eZAxis;
+    FbxAxisSystem::EFrontVector frontvec = static_cast <FbxAxisSystem::EFrontVector>(-1);
+    FbxAxisSystem::ECoordSystem coordSystem = FbxAxisSystem::eRightHanded;
+
+    if (is_Yup) //if is (Z-up or Y-up) (false or true)
+    {
+        upvec = FbxAxisSystem::eYAxis;
+    }
+
+    if (is_Left) //if is (right or left) (false or true)
+    {
+        coordSystem = FbxAxisSystem::eLeftHanded;
+    }
+    
+    FbxAxisSystem axisSystem(upvec,frontvec, coordSystem);
+    */ 
+
+    scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::mm);
+    scene->GetGlobalSettings().SetAxisSystem(axisSystem);
+    
 
     FbxExporter* IExporter = FbxExporter::Create(manager, "");
     if (IExporter->Initialize("D:/Users/akiak/Desktop/export/test.fbx", pFileFormat))
