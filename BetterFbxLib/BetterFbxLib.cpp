@@ -22,7 +22,7 @@ void DeleteManager()
     manager = nullptr;
 }
 
-void ExportFBX(bool isAscii, int axisSelect)
+void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path)
 {
     int pFileFormat = manager->GetIOPluginRegistry()->GetNativeWriterFormat();
 
@@ -90,14 +90,21 @@ void ExportFBX(bool isAscii, int axisSelect)
 
     scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::mm);
     scene->GetGlobalSettings().SetAxisSystem(axisSystem);
-    
+
+
+    const char* _path = wStringToChar(path);
 
     FbxExporter* IExporter = FbxExporter::Create(manager, "");
-    if (IExporter->Initialize("D:/Users/akiak/Desktop/export/test.fbx", pFileFormat))
+    if (IExporter->Initialize(_path, pFileFormat))
     {
         IExporter->Export(scene);
     }
     IExporter->Destroy();
+    if (_path)
+    {
+        delete[] _path;
+        _path = nullptr;
+    }
 }
 
 

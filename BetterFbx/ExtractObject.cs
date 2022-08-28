@@ -32,7 +32,7 @@ namespace BetterFbx
 		{
 			if (ro.Name == null)
 			{
-				return "objec";
+				return "object";
 			}
 			return ro.Name;
 		}

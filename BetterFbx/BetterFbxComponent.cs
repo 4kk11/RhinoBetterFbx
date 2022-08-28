@@ -27,10 +27,14 @@ namespace BetterFbx
 		{
 			pManager.AddScriptVariableParameter("guid", "guid", "", GH_ParamAccess.list);
 			pManager.AddBooleanParameter("button", "button", "", GH_ParamAccess.item);
-			pManager.AddIntegerParameter("AxisSelect", "AxisSelect", "", GH_ParamAccess.item);
+			
+			pManager.AddIntegerParameter("AxisSelect", "AxisSelect", "", GH_ParamAccess.item, 0);
+			pManager.AddTextParameter("Path", "Path", "", GH_ParamAccess.item);
 			pManager[0].Optional = true;
 			pManager[1].Optional = true;
 			pManager[2].Optional = true;
+			pManager[3].Optional = true;
+			
 		}
 
 
@@ -57,13 +61,17 @@ namespace BetterFbx
 
 			bool button = false;
 			int axisSelect = 0;
+			string path = null;
 			
 			DA.GetData("button", ref button);
 			DA.GetData("AxisSelect", ref axisSelect);
+			DA.GetData("Path", ref path);
+
+			if (path == null) path = "D:/Users/akiak/Desktop/export/test.fbx";
 
 			if (button)
 			{
-				ExportMeshFBX(rhinoObjects, axisSelect);
+				ExportMeshFBX(rhinoObjects, axisSelect, path);
 			}
 		}
 
@@ -73,7 +81,7 @@ namespace BetterFbx
 		public override Guid ComponentGuid => new Guid("4F20AB28-A245-4971-91F6-B52F7E15D506");
 
 
-		static public void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, int axisSelect)
+		static public void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, int axisSelect, string path)
 		{
 			UnsafeNativeMethods.CreateManager();
 
@@ -83,7 +91,7 @@ namespace BetterFbx
 				UnsafeNativeMethods.CreateNode(pro);
 			}
 
-			UnsafeNativeMethods.ExportFBX(false, axisSelect);
+			UnsafeNativeMethods.ExportFBX(false, axisSelect, path);
 			UnsafeNativeMethods.DeleteManager();
 		}
 

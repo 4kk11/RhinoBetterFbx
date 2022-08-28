@@ -33,18 +33,37 @@ void SetUpFbxMesh_Vertices(FbxMesh* pFbxMesh, const ON_Mesh* pRhinoMesh)
 }
 
 
+void CreateUVmap(FbxMesh* pFbxMesh, const ON_SimpleArray<ON_2fPoint>& texCoords, const char* uvName)
+{
+    int vCount = texCoords.Count();
+
+    FbxGeometryElementUV* fbx_uvMap = pFbxMesh->CreateElementUV(uvName); 
+    fbx_uvMap->SetMappingMode(FbxGeometryElement::eByControlPoint); //Rhinoはuv座標数=頂点数になる
+    fbx_uvMap->SetReferenceMode(FbxGeometryElement::eDirect);
+
+    for (int i = 0; i < vCount; i++)
+    {
+        //set texture coordinate to uvMap in fbx
+        FbxVector2 uv(texCoords[i].x, texCoords[i].y);
+        fbx_uvMap->GetDirectArray().Add(uv);
+    }
+}
+
 void SetUpFbxMesh_UV(FbxMesh* pFbxMesh, const ON_Mesh* pRhinoMesh, const CRhinoObject* pRhinoObject)
 {
     //get mesh info from RhinoMesh
     int vCount = pRhinoMesh->VertexCount();
 
     //get rhinoDoc info and rhino texture table
+    //デフォルトの状態(マッピングチャンネルに名前がない等)だと、pObject->Attributes().m_rendering_attributes.m_mappings.Count() = 0になる。
+    // つまりpRefがNULLになってしまう。(TextureCoordinatesがマッピングに反映されていない?)
+    //なので、0のとき(マッピングチャンネルが1つだけでかつデフォルト状態)では、ON_Mesh.m_TからTextureCoordinatesを取る。
     CRhinoDoc* pRhinoDoc = pRhinoObject->Document();
     const ON_MappingRef* pRef = GetValidMappingRef(pRhinoObject, true);
-    CRhinoTextureMappingTable& table = pRhinoDoc->m_texture_mapping_table;
-
-    if (pRef != NULL)
+    
+    if (pRef != NULL) //Get TextureCoordinates via mapping channels
     {
+        CRhinoTextureMappingTable& table = pRhinoDoc->m_texture_mapping_table;
         //repeat for number of mappings
         for (int k = 0; k < pRef->m_mapping_channels.Count(); k++)
         {
@@ -53,24 +72,20 @@ void SetUpFbxMesh_UV(FbxMesh* pFbxMesh, const ON_Mesh* pRhinoMesh, const CRhinoO
             ON_UUID id = chan.m_mapping_id;
             ON_TextureMapping mapping;
             if (!table.GetTextureMapping(id, mapping)) continue;
-            ON_SimpleArray<ON_2fPoint> _textureCoordinates;
-            _textureCoordinates.SetCount(vCount);
-            mapping.GetTextureCoordinates(*pRhinoMesh, _textureCoordinates);
+            ON_SimpleArray<ON_2fPoint> textureCoordinates;
+            textureCoordinates.SetCount(vCount);
+            mapping.GetTextureCoordinates(*pRhinoMesh, textureCoordinates);
 
             char num_char[3 + sizeof(char)];
             std::sprintf(num_char, "%d", k);
-            //create uvMap in fbx
-            FbxGeometryElementUV* fbx_uvMap = pFbxMesh->CreateElementUV(num_char); 
-            fbx_uvMap->SetMappingMode(FbxGeometryElement::eByControlPoint); //Rhinoはuv座標数=頂点数になる
-            fbx_uvMap->SetReferenceMode(FbxGeometryElement::eDirect);
-
-            for (int i = 0; i < vCount; i++)
-            {
-                //set texture coordinate to uvMap in fbx
-                FbxVector2 uv(_textureCoordinates[i].x, _textureCoordinates[i].y);
-                fbx_uvMap->GetDirectArray().Add(uv);
-            }
+            //create uvMap in fbx  
+            CreateUVmap(pFbxMesh, textureCoordinates, num_char); //TODO: fix uvName
         }
+    }
+    else //Get TextureCoordinates via ON_Mesh
+    {
+        ON_2fPointArray textureCoordinates = pRhinoMesh->m_T;
+        CreateUVmap(pFbxMesh, textureCoordinates, "uvmap_0");
     }
 }
 
@@ -109,6 +124,7 @@ void SetUpFbxMesh_Faces(FbxMesh* pFbxMesh, const ON_Mesh* pRhinoMesh)
 FbxSurfacePhong* CreateMaterial(FbxScene* scene, const ON_Material& onMaterial)
 {
     char* matName = wStringToChar(onMaterial.Name().Array());
+    //TODO: adjust parameters
     FbxDouble3 Black(0.0, 0.0, 0.0);
     ON_Color onEmission = onMaterial.Emission();
     FbxDouble3 IEmissiveColor(onEmission.FractionRed(), onEmission.FractionGreen(), onEmission.FractionBlue());
@@ -334,7 +350,7 @@ static const ON_MappingRef* GetValidMappingRef(const CRhinoObject* pObject, bool
     if (NULL == pObject)
         return NULL;
 
-    const ON_ObjectRenderingAttributes& attr = pObject->Attributes().m_rendering_attributes;
+    const ON_ObjectRenderingAttributes& attr = pObject->Attributes().m_rendering_attributes; 
 
     // There are no mappings at all - just get out.
     if (0 == attr.m_mappings.Count())
