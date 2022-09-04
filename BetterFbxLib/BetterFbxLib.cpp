@@ -91,7 +91,6 @@ void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path)
     scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::mm);
     scene->GetGlobalSettings().SetAxisSystem(axisSystem);
 
-
     const char* _path = wStringToChar(path);
 
     FbxExporter* IExporter = FbxExporter::Create(manager, "");
@@ -133,9 +132,36 @@ void CreateNode(const CRhinoObject* pRhinoObject)
     meshNode->AddMaterial(fbxMaterial); //SetMaterial
     
     //Custom properties
-    AddCustomProperty_FromRhino(meshNode, pRhinoObject);
+    AddCustomProperty_FromRhino(fbxMesh, pRhinoObject);
 
     terminalNode->AddChild(meshNode);
+}
+
+//New Node
+FbxNode* FbxNode_New(const wchar_t* name)
+{
+    FbxManager* manager_temp = FbxManager::Create();
+    const char* _name = wStringToChar(name);
+    FbxNode* node = FbxNode::Create(manager_temp, _name);
+    delete[] _name;
+    _name = nullptr;
+    return node;
+}
+
+void FbxNode_AddChild(FbxNode* pFbxNode_parent, FbxNode* pFbxNode_child)
+{
+    pFbxNode_parent->AddChild(pFbxNode_child);
+}
+
+void FbxNode_SetAttribute(FbxNode* pFbxNode, FbxNodeAttribute* pFbxNodeAttr)
+{
+    pFbxNode->SetNodeAttribute(pFbxNodeAttr);
+}
+
+// Delete Node
+void FbxNode_Delete(FbxNode* pFbxNode)
+{
+    pFbxNode->GetFbxManager()->Destroy();
 }
 
 

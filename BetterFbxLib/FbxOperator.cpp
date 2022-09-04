@@ -288,7 +288,7 @@ FbxNode* SetupFbxNode_MeshNode(FbxScene* scene, const CRhinoObject* pRhinoObject
     return meshNode;
 }
 
-void AddCustomProperty_FromRhino(FbxNode* node, const CRhinoObject* pRhinoObject)
+void AddCustomProperty_FromRhino(FbxObject* pFbxObject, const CRhinoObject* pRhinoObject)
 {
     CRhinoObjectAttributes att = pRhinoObject->Attributes();
     int usCount = att.UserStringCount();
@@ -309,7 +309,7 @@ void AddCustomProperty_FromRhino(FbxNode* node, const CRhinoObject* pRhinoObject
         const char* value = wStringToChar(value_w);
 
         //create userdef property
-        FbxPropertyT<FbxString> fbxProperty = FbxProperty::Create(node, FbxStringDT, key);
+        FbxPropertyT<FbxString> fbxProperty = FbxProperty::Create(pFbxObject, FbxStringDT, key);
         fbxProperty.ModifyFlag(FbxPropertyFlags::eUserDefined, true);
         fbxProperty.ModifyFlag(FbxPropertyFlags::eAnimatable, true);
         fbxProperty.Set(value);
