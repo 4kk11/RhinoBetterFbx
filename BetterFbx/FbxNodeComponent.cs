@@ -17,8 +17,9 @@ namespace BetterFbx
         {
             pManager.AddTextParameter("Name", "Name", "", GH_ParamAccess.item);
             pManager.AddParameter(new FbxNodeParameter(), "ChildNode", "ChildNode", "", GH_ParamAccess.list);
-            
             pManager[1].Optional = true;
+            pManager.AddParameter(new FbxNodeAttributeParameter(), "Attribute", "Attribute", "", GH_ParamAccess.item);
+            pManager[2].Optional = true;
 
         }
 
@@ -38,7 +39,10 @@ namespace BetterFbx
             List<FbxNode> childNodes = new List<FbxNode>();
             DA.GetDataList("ChildNode", childNodes);
 
-            FbxNode fbxNode = new FbxNode(nodeName, childNodes);
+            FbxNodeAttribute attr = null;
+            DA.GetData("Attribute", ref attr);
+
+            FbxNode fbxNode = new FbxNode(nodeName, childNodes, attr);
 
             DA.SetData("Node", new FbxNodeGoo(fbxNode));
 

@@ -11,26 +11,30 @@ namespace BetterFbx
 		private IntPtr m_ptr;
 		private string name;
 		private List<FbxNode> childNodes = new List<FbxNode>();
+		private FbxNodeAttribute attribute;
 		
 		public IntPtr NonConstPointer()
 		{
 			return m_ptr;
 		}
 
-		public FbxNode(string nodeName, List<FbxNode> _childNodes = null)
+		public FbxNode(string nodeName, List<FbxNode> _childNodes , FbxNodeAttribute attr )
 		{
-			//create FbxNode with UnsafeNativeMethod.
-			m_ptr = UnsafeNativeMethods.FbxNode_New(this.name);
-
 			//set name
 			if (nodeName == null) this.name = "node0";
 			else this.name = nodeName;
+
+			//create FbxNode with UnsafeNativeMethod.
+			m_ptr = UnsafeNativeMethods.FbxNode_New(this.name);
 
 			//set childNodes
 			if (_childNodes != null)
 			{
 				AddChildNodes(_childNodes);
 			}
+
+			//set Attribute
+			if (attr != null) SetAttribtue(attr);
 		}
 
 		public string GetName()
@@ -63,6 +67,17 @@ namespace BetterFbx
 			return childNodes.Count;
 		}
 
+		public void SetAttribtue(FbxNodeAttribute attr)
+		{
+			UnsafeNativeMethods.FbxNode_SetAttribute(m_ptr, attr.NonConstPointer());
+			attribute = attr;
+		}
+
+		public FbxNodeAttribute GetAttribute()
+		{
+			return this.attribute;
+		}
+
 		~FbxNode()
 		{
 			InternalDispose();
@@ -86,7 +101,7 @@ namespace BetterFbx
 
 		public FbxNode Duplicate()
 		{
-			return new FbxNode(this.name, this.childNodes);
+			return new FbxNode(this.name, this.childNodes, this.attribute);
 		}
 
 	}

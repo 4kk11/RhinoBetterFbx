@@ -64,7 +64,7 @@ namespace BetterFbx
 			FbxNode fbxNode = source as FbxNode;
 			if (fbxNode != null)
 			{
-				Value = fbxNode.Duplicate();  //おそらく、FbxNodeのコンストラクタにchild等の情報を渡す仕組みでないと受け継がれない
+				Value = fbxNode.Duplicate();  //(済)おそらく、FbxNodeのコンストラクタにchild等の情報を渡す仕組みでないと受け継がれない
 				return true;
 			}
 
@@ -86,7 +86,7 @@ namespace BetterFbx
 
 	public class FbxNodeParameter : GH_PersistentParam<FbxNodeGoo>
 	{
-		public FbxNodeParameter() : base(new GH_InstanceDescription("FbxNode", "FbxNode", "", "MyTools", "BetterFbx"))
+		public FbxNodeParameter() : base(new GH_InstanceDescription("FbxNodeParam", "FbxNodeParam", "", "MyTools", "BetterFbx"))
 		{ }
 
 		public static readonly Guid ParameterId = new Guid("29863442-C045-4D55-96B6-29A4772A9F0D");

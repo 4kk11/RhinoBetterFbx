@@ -33,5 +33,11 @@ namespace BetterFbx
 		public static extern void FbxNode_AddChild(IntPtr pFbxNode_parent, IntPtr pFbxNode_child);
 		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void FbxNode_SetAttribute(IntPtr pFbxNode, IntPtr pFbxNodeAttr);
+
+		//FbxNodeAttributeComponent
+		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern IntPtr FbxMesh_New(IntPtr pRhinoMesh);
+		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern void FbxNodeAttribute_Delete(IntPtr pFbxNodeAttribute);
 	}
 }

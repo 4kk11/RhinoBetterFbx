@@ -137,7 +137,7 @@ void CreateNode(const CRhinoObject* pRhinoObject)
     terminalNode->AddChild(meshNode);
 }
 
-//New Node
+//<FbxNodeComponent>
 FbxNode* FbxNode_New(const wchar_t* name)
 {
     FbxManager* manager_temp = FbxManager::Create();
@@ -158,11 +158,27 @@ void FbxNode_SetAttribute(FbxNode* pFbxNode, FbxNodeAttribute* pFbxNodeAttr)
     pFbxNode->SetNodeAttribute(pFbxNodeAttr);
 }
 
-// Delete Node
 void FbxNode_Delete(FbxNode* pFbxNode)
 {
     pFbxNode->GetFbxManager()->Destroy();
 }
 
+//</FbxNodeComponent>
 
+//<FbxNodeAttributeComponent>
 
+FbxMesh* FbxMesh_New(const ON_Mesh* pRhinoMesh)
+{
+    FbxManager* manager_temp = FbxManager::Create();
+    FbxMesh* pFbxMesh = FbxMesh::Create(manager_temp, "mesh");
+    SetUpFbxMesh_Vertices(pFbxMesh, pRhinoMesh);
+    SetUpFbxMesh_Faces(pFbxMesh, pRhinoMesh);
+
+    return pFbxMesh;
+}
+
+void FbxNodeAttribute_Delete(FbxNodeAttribute* pFbxNodeAttr)
+{
+    pFbxNodeAttr->GetFbxManager()->Destroy();
+}
+//</FbxNodeAttributeComponent>
