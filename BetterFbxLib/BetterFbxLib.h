@@ -18,7 +18,11 @@ extern "C"
 
     //<FbxNodeAttributeComponent>
     __declspec(dllexport) FbxMesh* FbxMesh_New(const ON_Mesh* pRhinoMesh);
-    __declspec(dllexport) void FbxNodeAttribute_Delete(FbxNodeAttribute* pFbxNodeAttr);
+    __declspec(dllexport) void FbxNodeAttribute_Delete(FbxMesh* pFbxNodeAttr);
     //</FbxNodeAttributeComponent>
+
+    //<FbxExporterComponent>
+    __declspec(dllexport) void FbxExporter_Set(FbxNode* pFbxNode);
+    //</FbxExporterComponent>
 }
 

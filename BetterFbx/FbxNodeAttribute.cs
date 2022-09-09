@@ -11,7 +11,7 @@ namespace BetterFbx
 	abstract public class FbxNodeAttribute : IDisposable
 	{
 		protected IntPtr m_ptr;
-
+		private bool disposed = false;
 
 		public IntPtr NonConstPointer()
 		{
@@ -24,6 +24,11 @@ namespace BetterFbx
 
 		}
 
+		~FbxNodeAttribute()
+		{
+			InternalDispose();
+		}
+
 		public void Dispose()
 		{
 			InternalDispose();
@@ -32,11 +37,15 @@ namespace BetterFbx
 
 		public void InternalDispose()
 		{
-			if (m_ptr != IntPtr.Zero)
+			if (!this.disposed)
 			{
-				//delete FbxNodeAttribute with UnsafeNativeMethod.
-				UnsafeNativeMethods.FbxNodeAttribute_Delete(m_ptr);
-				m_ptr = IntPtr.Zero;
+				if (m_ptr != IntPtr.Zero)
+				{
+					//delete FbxNodeAttribute with UnsafeNativeMethod.
+					UnsafeNativeMethods.FbxNodeAttribute_Delete(m_ptr);
+					m_ptr = IntPtr.Zero;
+					this.disposed = true;
+				}
 			}
 		}
 

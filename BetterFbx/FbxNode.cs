@@ -49,6 +49,7 @@ namespace BetterFbx
 
 		public void AddChildNode(FbxNode node)
 		{
+			if (node == null) return;
 			UnsafeNativeMethods.FbxNode_AddChild(m_ptr, node.NonConstPointer());
 			childNodes.Add(node);
 		}
@@ -72,12 +73,12 @@ namespace BetterFbx
 			UnsafeNativeMethods.FbxNode_SetAttribute(m_ptr, attr.NonConstPointer());
 			attribute = attr;
 		}
-
+		
 		public FbxNodeAttribute GetAttribute()
 		{
 			return this.attribute;
 		}
-
+		
 		~FbxNode()
 		{
 			InternalDispose();

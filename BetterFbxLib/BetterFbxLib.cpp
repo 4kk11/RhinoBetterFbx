@@ -94,16 +94,27 @@ void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path)
     const char* _path = wStringToChar(path);
 
     FbxExporter* IExporter = FbxExporter::Create(manager, "");
+
+    /*
+    FbxNode* root = scene->GetRootNode();
+    FbxNode* parent = root->GetChild(0);
+    FbxNode* child1 = parent->GetChild(0);
+    FbxNode* child2 = child1->GetChild(0);
+    FbxMesh* mesh = child2->GetMesh();
+    const char* name = mesh->GetName();
+    */
     if (IExporter->Initialize(_path, pFileFormat))
     {
         IExporter->Export(scene);
     }
     IExporter->Destroy();
+
     if (_path)
     {
         delete[] _path;
         _path = nullptr;
     }
+
 }
 
 
@@ -150,7 +161,9 @@ FbxNode* FbxNode_New(const wchar_t* name)
 
 void FbxNode_AddChild(FbxNode* pFbxNode_parent, FbxNode* pFbxNode_child)
 {
+
     pFbxNode_parent->AddChild(pFbxNode_child);
+
 }
 
 void FbxNode_SetAttribute(FbxNode* pFbxNode, FbxNodeAttribute* pFbxNodeAttr)
@@ -160,13 +173,13 @@ void FbxNode_SetAttribute(FbxNode* pFbxNode, FbxNodeAttribute* pFbxNodeAttr)
 
 void FbxNode_Delete(FbxNode* pFbxNode)
 {
+    pFbxNode->RemoveNodeAttributeByIndex(0);
     pFbxNode->GetFbxManager()->Destroy();
 }
 
 //</FbxNodeComponent>
 
 //<FbxNodeAttributeComponent>
-
 FbxMesh* FbxMesh_New(const ON_Mesh* pRhinoMesh)
 {
     FbxManager* manager_temp = FbxManager::Create();
@@ -177,8 +190,26 @@ FbxMesh* FbxMesh_New(const ON_Mesh* pRhinoMesh)
     return pFbxMesh;
 }
 
-void FbxNodeAttribute_Delete(FbxNodeAttribute* pFbxNodeAttr)
+void FbxNodeAttribute_Delete(FbxMesh* pFbxNodeAttr)
 {
-    pFbxNodeAttr->GetFbxManager()->Destroy();
+    if (!pFbxNodeAttr) return;
+    FbxManager* manager = pFbxNodeAttr->GetFbxManager();
+    if (manager) manager->Destroy();
+    else pFbxNodeAttr->Destroy();
+    
 }
 //</FbxNodeAttributeComponent>
+
+//<FbxExporterCompornent>
+void FbxExporter_Set(FbxNode* pFbxNode)
+{
+    FbxCloneManager cloneManager;
+    FbxNode* clone = (FbxNode*)cloneManager.Clone(pFbxNode);
+    //RootNodeに入れると何らかの原因でこわれる？ルートの一個下のノードしか残らない...
+    // 最初の一回目は正常だが、二回目に壊れている。
+    //cloneを生成・入力することで一応回避できる。。
+    FbxNode* rootNode = scene->GetRootNode();
+    rootNode->AddChild(clone);
+}
+
+//</FbxExporterComponent>

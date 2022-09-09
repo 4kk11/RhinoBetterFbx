@@ -81,7 +81,7 @@ namespace BetterFbx
 		public override Guid ComponentGuid => new Guid("4F20AB28-A245-4971-91F6-B52F7E15D506");
 
 
-		static public void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, int axisSelect, string path)
+		private void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, int axisSelect, string path)
 		{
 			UnsafeNativeMethods.CreateManager();
 

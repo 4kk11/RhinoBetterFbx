@@ -39,5 +39,9 @@ namespace BetterFbx
 		public static extern IntPtr FbxMesh_New(IntPtr pRhinoMesh);
 		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void FbxNodeAttribute_Delete(IntPtr pFbxNodeAttribute);
+
+		//FbxExporterComponent
+		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern void FbxExporter_Set(IntPtr pFbxNode);
 	}
 }
