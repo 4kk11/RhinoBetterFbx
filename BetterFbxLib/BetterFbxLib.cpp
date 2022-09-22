@@ -22,7 +22,24 @@ void DeleteManager()
     manager = nullptr;
 }
 
-void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path)
+void ImportFBX(const wchar_t* path)
+{
+    //FbxImporter
+    FbxImporter* importer = FbxImporter::Create(manager, "");
+    const char* _path = wStringToChar(path);
+    if (importer->Initialize(_path))
+    {
+        importer->Import(scene);
+    }
+    importer->Destroy();
+    if (_path)
+    {
+        delete[] _path;
+        _path = nullptr;
+    }
+}
+
+void ExportFBX(bool isAscii, int axisSelect, int unitSelect, const wchar_t* path)
 {
     int pFileFormat = manager->GetIOPluginRegistry()->GetNativeWriterFormat();
 
@@ -51,16 +68,20 @@ void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path)
     switch (axisSelect)
     {
         case 0:
-            axisSystem = FbxAxisSystem::Max; // ZAxis, -ParityOdd, RightHanded.
             break;
         case 1:
-            axisSystem = FbxAxisSystem::Motionbuilder; // YAxis, ParityOdd, RightHanded.
+            axisSystem = FbxAxisSystem::Max; // ZAxis, -ParityOdd, RightHanded.
+            scene->GetGlobalSettings().SetAxisSystem(axisSystem);
             break;
         case 2:
+            axisSystem = FbxAxisSystem::Motionbuilder; // YAxis, ParityOdd, RightHanded.
+            scene->GetGlobalSettings().SetAxisSystem(axisSystem);
+            break;
+        case 3:
             axisSystem = FbxAxisSystem::DirectX; // YAxis, ParityOdd, LeftHanded.
+            scene->GetGlobalSettings().SetAxisSystem(axisSystem);
             break;
         default:
-            axisSystem = FbxAxisSystem::Max;
             break;
     }
     
@@ -88,8 +109,28 @@ void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path)
     FbxAxisSystem axisSystem(upvec,frontvec, coordSystem);
     */ 
 
-    scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::mm);
-    scene->GetGlobalSettings().SetAxisSystem(axisSystem);
+    switch (unitSelect)
+    {
+        case 0:
+            break;
+        case 1: //mm
+            FbxSystemUnit::mm.ConvertScene(scene);
+            scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::mm);
+            break;
+        case 2: //cm
+            FbxSystemUnit::cm.ConvertScene(scene);
+            scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::cm);
+            break;
+        case 3: //m
+            FbxSystemUnit::m.ConvertScene(scene);
+            scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::m);
+            break;
+        default:
+            break;
+    }
+
+    
+   
 
     const char* _path = wStringToChar(path);
 
@@ -103,7 +144,11 @@ void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path)
     FbxMesh* mesh = child2->GetMesh();
     const char* name = mesh->GetName();
     */
-    if (IExporter->Initialize(_path, pFileFormat))
+    
+    FbxIOSettings* ios = FbxIOSettings::Create(manager, IOSROOT);
+    ios->SetBoolProp(EXP_FBX_EMBEDDED, true);
+
+    if (IExporter->Initialize(_path, pFileFormat, ios))
     {
         IExporter->Export(scene);
     }

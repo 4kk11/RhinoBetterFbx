@@ -17,8 +17,12 @@ namespace BetterFbx
 		public static extern void CreateManager();
 		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void DeleteManager();
+
 		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-		public static extern void ExportFBX([MarshalAs(UnmanagedType.Bool)]bool isAscii, int axisSelect, string path);
+		public static extern void ImportFBX(string path);
+
+		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+		public static extern void ExportFBX([MarshalAs(UnmanagedType.Bool)]bool isAscii, int axisSelect, int unitSelect, string path);
 
 		[DllImport("BetterFbxLib.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
 		public static extern void CreateNode(IntPtr pro);

@@ -6,7 +6,7 @@ D:\home\GH_Plugins\BetterFbx\BetterFbxLib\stdafx.h(81,1): warning C4005: '_DEBUG
 D:\home\GH_Plugins\BetterFbx\BetterFbxLib\BetterFbxLibApp.cpp : message : '_DEBUG' の以前の定義を確認してください
    --- Rhino C++ component links with libs in "C:/Program Files/Rhino 7 SDK/Lib/Release"
   BetterFbxLib.cpp
-D:\home\GH_Plugins\BetterFbx\BetterFbxLib\BetterFbxLib.cpp(196,27): warning C4459: 'manager' を宣言すると、グローバル宣言が隠蔽されます
+D:\home\GH_Plugins\BetterFbx\BetterFbxLib\BetterFbxLib.cpp(241,27): warning C4459: 'manager' を宣言すると、グローバル宣言が隠蔽されます
 D:\home\GH_Plugins\BetterFbx\BetterFbxLib\BetterFbxLib.cpp(9,13): message : 'manager' の宣言を確認してください
   FbxOperator.cpp
 D:\home\GH_Plugins\BetterFbx\BetterFbxLib\FbxOperator.cpp(25,16): warning C4189: 'vertX': ローカル変数が初期化されましたが、参照されていません

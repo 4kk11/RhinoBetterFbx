@@ -91,7 +91,7 @@ namespace BetterFbx
 				UnsafeNativeMethods.CreateNode(pro);
 			}
 
-			UnsafeNativeMethods.ExportFBX(false, axisSelect, path);
+			UnsafeNativeMethods.ExportFBX(false, axisSelect, 1, path);
 			UnsafeNativeMethods.DeleteManager();
 		}
 

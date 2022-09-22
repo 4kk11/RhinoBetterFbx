@@ -16,7 +16,7 @@ namespace BetterFbx
         {
             pManager.AddParameter(new FbxNodeParameter(), "Node", "Node", "", GH_ParamAccess.item);
             pManager.AddBooleanParameter("button", "button", "", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("AxisSelect", "AxisSelect", "", GH_ParamAccess.item, 0);
+            pManager.AddIntegerParameter("AxisSelect", "AxisSelect", "", GH_ParamAccess.item, 1);
             pManager.AddTextParameter("Path", "Path", "", GH_ParamAccess.item);
             pManager.AddBooleanParameter("isAscii", "isAscii", "", GH_ParamAccess.item);
             pManager[1].Optional = true;
@@ -67,7 +67,7 @@ namespace BetterFbx
             UnsafeNativeMethods.FbxExporter_Set(fbxNode.NonConstPointer());
 
             //export fbx
-            UnsafeNativeMethods.ExportFBX(isAscii, axisSelect, path);
+            UnsafeNativeMethods.ExportFBX(isAscii, axisSelect, 1, path);
             
 
             UnsafeNativeMethods.DeleteManager();

@@ -6,7 +6,8 @@ extern "C"
 {
     __declspec(dllexport) void CreateManager();
     __declspec(dllexport) void DeleteManager();
-    __declspec(dllexport) void ExportFBX(bool isAscii, int axisSelect, const wchar_t* path);
+    __declspec(dllexport) void ImportFBX(const wchar_t* path);
+    __declspec(dllexport) void ExportFBX(bool isAscii, int axisSelect, int unitSelect, const wchar_t* path);
     __declspec(dllexport) void CreateNode(const CRhinoObject* rhinoObject);
 
     //<FbxNodeComponent>
