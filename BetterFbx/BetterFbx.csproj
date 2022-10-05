@@ -30,7 +30,7 @@
   </PropertyGroup>
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="set OUTPUT_DIRECTORY=&quot;C:\Users\akiak\AppData\Roaming\Grasshopper\Libraries\$(ProjectName)\&quot;&#xD;&#xA;if not exist %25OUTPUT_DIRECTORY%25 mkdir %25OUTPUT_DIRECTORY%25&#xD;&#xA;copy &quot;$(TargetDir)&quot; %25OUTPUT_DIRECTORY%25" />
+    <Exec Command="set OUTPUT_DIRECTORY=&quot;$(APPDATA)\Grasshopper\Libraries\$(ProjectName)\&quot;&#xD;&#xA;if not exist %25OUTPUT_DIRECTORY%25 mkdir %25OUTPUT_DIRECTORY%25&#xD;&#xA;copy &quot;$(TargetDir)&quot; %25OUTPUT_DIRECTORY%25" />
   </Target>
 
 </Project>

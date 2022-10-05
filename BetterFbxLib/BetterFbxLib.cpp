@@ -109,12 +109,13 @@ void ExportFBX(bool isAscii, int axisSelect, int unitSelect, const wchar_t* path
     FbxAxisSystem axisSystem(upvec,frontvec, coordSystem);
     */ 
 
+    //TODO: ユニットスケールについての詳しい検証
     switch (unitSelect)
     {
         case 0:
             break;
         case 1: //mm
-            FbxSystemUnit::mm.ConvertScene(scene);
+            //FbxSystemUnit::mm.ConvertScene(scene);
             scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::mm);
             break;
         case 2: //cm
@@ -166,8 +167,18 @@ void ExportFBX(bool isAscii, int axisSelect, int unitSelect, const wchar_t* path
 void CreateNode(const CRhinoObject* pRhinoObject)
 {
     if (pRhinoObject == NULL) return;
+    const ON_Mesh* rhinoMesh;
+    if (pRhinoObject->ObjectType() == ON::mesh_object)
+    {
+        rhinoMesh = dynamic_cast<const ON_Mesh*>(pRhinoObject->Geometry());
+    }
+    else
+    {
+        ON_SimpleArray<const ON_Mesh*> meshes;
+        pRhinoObject->GetMeshes(ON::preview_mesh, meshes);
+        rhinoMesh = meshes[0];
+    }
 
-    const ON_Mesh* rhinoMesh = dynamic_cast<const ON_Mesh*>(pRhinoObject->Geometry());
     if (!rhinoMesh) return;
 
     //Create FbxMesh
