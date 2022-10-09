@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rhino;
+using Rhino.PlugIns;
+using Rhino.FileIO;
+using Rhino.UI;
 using Rhino.FileIO;
 using Rhino.Runtime;
 using Rhino.DocObjects;
@@ -27,17 +30,27 @@ namespace BetterFbx_FileExport
 
 		protected override Rhino.PlugIns.WriteFileResult WriteFile(string filename, int index, RhinoDoc doc, Rhino.FileIO.FileWriteOptions options)
 		{
-			var rhinoObjects = GetObjectsToExport(doc);
-			BetterFbx_FileExportCommand.ExportMeshFBX(rhinoObjects, 0, filename);
+			var rhinoObjects = BetterFbx_FileExportCommand.GetObjectsToExport(doc);
+
+			
+			ExportOptionDialog exportOptionDialog = new ExportOptionDialog();
+			exportOptionDialog.RestorePosition();
+			exportOptionDialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow);
+			
+			BetterFbx_FileExportCommand.ExportMeshFBX(rhinoObjects, 1, filename);
 			return Rhino.PlugIns.WriteFileResult.Success;
 		}
 
-		private IEnumerable<Rhino.DocObjects.RhinoObject> GetObjectsToExport(RhinoDoc doc)
+		#region Settings
+
+		private const string mapRhinoZToFbx_Key = "MapZupToYup";
+		public const bool MapRhinoZToFbxY_Default = false;
+		public static bool MapRhinoZToFbxY
 		{
-			return doc.Objects.GetSelectedObjects(false, false);
+			get => Instance.Settings.GetBool(mapRhinoZToFbx_Key, MapRhinoZToFbxY_Default);
+			set => Instance.Settings.SetBool(mapRhinoZToFbx_Key, value);
 		}
 
-
-
+		#endregion
 	}
 }

@@ -23,7 +23,6 @@ namespace BetterFbx_FileExport
 
 		protected override Result RunCommand(RhinoDoc doc, RunMode mode)
 		{
-			Rhino.RhinoApp.WriteLine("Exported!!!");
 			return Result.Success;
 		}
 		public static void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, int axisSelect, string path)
@@ -43,5 +42,10 @@ namespace BetterFbx_FileExport
 			UnsafeNativeMethods.DeleteManager();
 		}
 
+
+		public static IEnumerable<Rhino.DocObjects.RhinoObject> GetObjectsToExport(RhinoDoc doc)
+		{
+			return doc.Objects.GetSelectedObjects(false, false);
+		}
 	}
 }
