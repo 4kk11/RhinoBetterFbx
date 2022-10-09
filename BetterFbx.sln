@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32510.428
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterFbx", "BetterFbx\BetterFbx.csproj", "{9A8C62F0-B79B-4EC2-AB4A-EB18E135E95C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterFbxGh", "BetterFbxGh\BetterFbxGh.csproj", "{9A8C62F0-B79B-4EC2-AB4A-EB18E135E95C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BetterFbxLib", "BetterFbxLib\BetterFbxLib.vcxproj", "{4E380D24-9903-44D0-AAC2-5DFB178C8453}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterFbx_FileExport", "BetterFbx_FileExport\BetterFbx_FileExport.csproj", "{EDF0229F-61E6-41D4-9CBD-481CF00D14BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterFbx_FileExport", "BetterFbx_FileExport\BetterFbx_FileExport.csproj", "{EDF0229F-61E6-41D4-9CBD-481CF00D14BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

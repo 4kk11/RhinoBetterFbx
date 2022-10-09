@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Rhino.Runtime;
 using Rhino.DocObjects;
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
 	class UnsafeNativeMethods
 	{

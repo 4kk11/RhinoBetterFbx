@@ -11,7 +11,7 @@ using Rhino.DocObjects;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
 	public class FbxRhinoExporterComponent : GH_Component
 	{

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Rhino.Geometry;
 
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
 	abstract public class FbxNodeAttribute : IDisposable
 	{

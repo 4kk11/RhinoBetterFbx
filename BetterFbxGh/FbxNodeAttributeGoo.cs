@@ -5,7 +5,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
 	public class FbxNodeAttributeGoo : GH_Goo<FbxNodeAttribute>
 	{
