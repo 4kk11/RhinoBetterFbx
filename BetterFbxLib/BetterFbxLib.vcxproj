@@ -111,7 +111,7 @@
     </ResourceCompile>
     <PostBuildEvent>
       <Command>copy "$(TargetDir)" $(SolutionDir)BetterFbx_FileExport\bin\Debug\net48\
-copy "$(TargetDir)" $(APPDATA)\Grasshopper\Libraries\BetterFbx\
+copy "$(TargetDir)" $(APPDATA)\Grasshopper\Libraries\BetterFbxGh\
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

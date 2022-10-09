@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
     public class FbxScaleChangeComponent : GH_Component
     {

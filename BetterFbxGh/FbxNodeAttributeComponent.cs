@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
-    public class FbxNodeAttributeComponent : GH_Component
+	public class FbxNodeAttributeComponent : GH_Component
     {
 
         public FbxNodeAttributeComponent() : base("FbxNodeAttribute", "FbxNodeAttribute", "Description", "MyTools", "BetterFbx")

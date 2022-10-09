@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
 	public class FbxNode : IDisposable
 	{

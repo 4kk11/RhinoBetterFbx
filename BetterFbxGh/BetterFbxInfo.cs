@@ -3,7 +3,7 @@ using Grasshopper.Kernel;
 using System;
 using System.Drawing;
 
-namespace BetterFbx
+namespace BetterFbxGh
 {
 	public class BetterFbxInfo : GH_AssemblyInfo
 	{
