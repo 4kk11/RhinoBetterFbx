@@ -66,6 +66,14 @@ namespace BetterFbx_FileExport
 			set => Instance.Settings.SetBool(isAsciiFormat_Key, value);
 		}
 
+		private const string meshDetailLevel_Key = "MeshLevel";
+		private const int meshDetailLevel_Default = 0;
+		public static int meshDetailLevel
+		{
+			get => Instance.Settings.GetInteger(meshDetailLevel_Key, meshDetailLevel_Default);
+			set => Instance.Settings.SetInteger(meshDetailLevel_Key, value);
+
+		}
 
 		#endregion
 	}
