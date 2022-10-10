@@ -31,7 +31,7 @@ namespace BetterFbx_FileExport
 			cancelButton.Text = "Cancel";
 			okButton.Text = "OK";
 
-			meshLevelBox.Text = "Mesh Level";
+			meshLevelBox.Text = "Mesh Detail Level (※ Valid only for non-mesh objects)";
 			meshLevelLabel_High.Text = "High";
 			meshLevelLabel_Low.Text = "Low";
 			meshLevel.SnapToTick = true;
@@ -53,7 +53,6 @@ namespace BetterFbx_FileExport
 				},
 			};
 
-			meshLevelBox.Enabled = false;
 
 			TabControl tabControl = new TabControl();
 
@@ -93,6 +92,8 @@ namespace BetterFbx_FileExport
 					})
 				},
 			};
+
+			
 
 		}
 
