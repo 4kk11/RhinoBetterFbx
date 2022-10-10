@@ -25,7 +25,7 @@ namespace BetterFbx_FileExport
 		{
 			return Result.Success;
 		}
-		public static void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, int axisSelect, string path)
+		public static void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, bool isAscii, int axisSelect, string path)
 		{
 			UnsafeNativeMethods.CreateManager();
 
@@ -38,7 +38,7 @@ namespace BetterFbx_FileExport
 				IntPtr pro = Interop.RhinoObjectConstPointer(ro);
 				UnsafeNativeMethods.CreateNode(pro);
 			}
-			UnsafeNativeMethods.ExportFBX(false, axisSelect, 1, path);
+			UnsafeNativeMethods.ExportFBX(isAscii, axisSelect, 1, path);
 			UnsafeNativeMethods.DeleteManager();
 		}
 

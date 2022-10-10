@@ -13,6 +13,7 @@ namespace BetterFbx_FileExport
 		private static readonly Eto.Drawing.Size DefaultSpacing = new Eto.Drawing.Size(2, 2);
 
 		private CheckBox mapZtoY = new CheckBox();
+		private CheckBox isAscii = new CheckBox();
 		private Button cancelButton = new Button();
 		private Button okButton = new Button();
 
@@ -22,6 +23,7 @@ namespace BetterFbx_FileExport
 			Resizable = false;
 			Title = "FBX Export Options";
 			mapZtoY.Text = "Map Rhino Z to FBX Y";
+			isAscii.Text = "Output in Ascii format.";
 			cancelButton.Text = "Cancel";
 			okButton.Text = "OK";
 
@@ -40,6 +42,7 @@ namespace BetterFbx_FileExport
 					Rows =
 					{
 						new TableRow(mapZtoY),
+						new TableRow(isAscii),
 					},
 				},
 			};
@@ -70,6 +73,7 @@ namespace BetterFbx_FileExport
 		private void DialogToOptions()
 		{
 			BetterFbx_FileExportPlugin.MapRhinoZToFbxY = GetCheckboxValue(mapZtoY);
+			BetterFbx_FileExportPlugin.isAsciiFormat = GetCheckboxValue(isAscii);
 		}
 
 		private bool GetCheckboxValue(CheckBox checkBox)

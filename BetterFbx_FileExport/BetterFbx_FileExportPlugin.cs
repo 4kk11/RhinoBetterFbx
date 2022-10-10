@@ -35,13 +35,16 @@ namespace BetterFbx_FileExport
 			
 			ExportOptionDialog exportOptionDialog = new ExportOptionDialog();
 			exportOptionDialog.RestorePosition();
-			exportOptionDialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow);
-			int axisSelect = 1;
-			if (MapRhinoZToFbxY)
+			Eto.Forms.DialogResult result = exportOptionDialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow);
+			if (result != Eto.Forms.DialogResult.Ok)
 			{
-				axisSelect = 0;
+				return WriteFileResult.Cancel;
 			}
-			BetterFbx_FileExportCommand.ExportMeshFBX(rhinoObjects, axisSelect, filename);
+
+			int axisSelect = MapRhinoZToFbxY ? 0 : 1;
+			bool isAscii = isAsciiFormat;
+
+			BetterFbx_FileExportCommand.ExportMeshFBX(rhinoObjects, isAscii, axisSelect, filename);
 			return Rhino.PlugIns.WriteFileResult.Success;
 		}
 
@@ -54,6 +57,15 @@ namespace BetterFbx_FileExport
 			get => Instance.Settings.GetBool(mapRhinoZToFbx_Key, MapRhinoZToFbxY_Default);
 			set => Instance.Settings.SetBool(mapRhinoZToFbx_Key, value);
 		}
+
+		private const string isAsciiFormat_Key = "isAscii";
+		public const bool isAsciiFormat_Default = false;
+		public static bool isAsciiFormat
+		{
+			get => Instance.Settings.GetBool(isAsciiFormat_Key, isAsciiFormat_Default);
+			set => Instance.Settings.SetBool(isAsciiFormat_Key, value);
+		}
+
 
 		#endregion
 	}
