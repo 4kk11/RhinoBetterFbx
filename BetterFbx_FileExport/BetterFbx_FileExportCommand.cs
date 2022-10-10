@@ -1,4 +1,5 @@
 ﻿using Rhino;
+using Rhino.Geometry;
 using Rhino.Commands;
 using Rhino.Input;
 using Rhino.Input.Custom;
@@ -23,10 +24,9 @@ namespace BetterFbx_FileExport
 
 		protected override Result RunCommand(RhinoDoc doc, RunMode mode)
 		{
-			Rhino.RhinoApp.WriteLine("Exported!!!");
 			return Result.Success;
 		}
-		public static void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, int axisSelect, string path)
+		public static void ExportMeshFBX(IEnumerable<RhinoObject> rhinoObjects, bool isAscii, int axisSelect, string path)
 		{
 			UnsafeNativeMethods.CreateManager();
 
@@ -34,14 +34,26 @@ namespace BetterFbx_FileExport
 			{
 				if (ro.ObjectType != ObjectType.Mesh)
 				{
-					ro.CreateMeshes(Rhino.Geometry.MeshType.Preview, Rhino.Geometry.MeshingParameters.FastRenderMesh, true);
+					ro.CreateMeshes(Rhino.Geometry.MeshType.Preview, CreateMeshingParameter(), true);
 				}
 				IntPtr pro = Interop.RhinoObjectConstPointer(ro);
 				UnsafeNativeMethods.CreateNode(pro);
 			}
-			UnsafeNativeMethods.ExportFBX(false, axisSelect, 1, path);
+			UnsafeNativeMethods.ExportFBX(isAscii, axisSelect, 1, path);
 			UnsafeNativeMethods.DeleteManager();
 		}
 
+
+		public static IEnumerable<Rhino.DocObjects.RhinoObject> GetObjectsToExport(RhinoDoc doc)
+		{
+			return doc.Objects.GetSelectedObjects(false, false);
+		}
+
+		private static MeshingParameters CreateMeshingParameter()
+		{
+			double meshDetailLevel = BetterFbx_FileExportPlugin.meshDetailLevel / 10.0;
+			MeshingParameters param = new MeshingParameters(meshDetailLevel);
+			return param;
+		}
 	}
 }
