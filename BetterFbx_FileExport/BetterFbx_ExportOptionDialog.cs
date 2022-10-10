@@ -53,6 +53,7 @@ namespace BetterFbx_FileExport
 				},
 			};
 
+			meshLevelBox.Enabled = false;
 
 			TabControl tabControl = new TabControl();
 

@@ -1,4 +1,5 @@
 ﻿using Rhino;
+using Rhino.Geometry;
 using Rhino.Commands;
 using Rhino.Input;
 using Rhino.Input.Custom;
@@ -33,7 +34,7 @@ namespace BetterFbx_FileExport
 			{
 				if (ro.ObjectType != ObjectType.Mesh)
 				{
-					ro.CreateMeshes(Rhino.Geometry.MeshType.Preview, new Rhino.Geometry.MeshingParameters(1.0), true);
+					ro.CreateMeshes(Rhino.Geometry.MeshType.Preview, CreateMeshingParameter(), true);
 				}
 				IntPtr pro = Interop.RhinoObjectConstPointer(ro);
 				UnsafeNativeMethods.CreateNode(pro);
@@ -46,6 +47,13 @@ namespace BetterFbx_FileExport
 		public static IEnumerable<Rhino.DocObjects.RhinoObject> GetObjectsToExport(RhinoDoc doc)
 		{
 			return doc.Objects.GetSelectedObjects(false, false);
+		}
+
+		private static MeshingParameters CreateMeshingParameter()
+		{
+			double meshDetailLevel = BetterFbx_FileExportPlugin.meshDetailLevel / 10.0;
+			MeshingParameters param = new MeshingParameters(meshDetailLevel);
+			return param;
 		}
 	}
 }
