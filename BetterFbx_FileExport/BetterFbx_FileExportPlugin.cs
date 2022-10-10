@@ -36,8 +36,12 @@ namespace BetterFbx_FileExport
 			ExportOptionDialog exportOptionDialog = new ExportOptionDialog();
 			exportOptionDialog.RestorePosition();
 			exportOptionDialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow);
-			
-			BetterFbx_FileExportCommand.ExportMeshFBX(rhinoObjects, 1, filename);
+			int axisSelect = 1;
+			if (MapRhinoZToFbxY)
+			{
+				axisSelect = 0;
+			}
+			BetterFbx_FileExportCommand.ExportMeshFBX(rhinoObjects, axisSelect, filename);
 			return Rhino.PlugIns.WriteFileResult.Success;
 		}
 

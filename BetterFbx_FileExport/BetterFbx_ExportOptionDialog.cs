@@ -25,6 +25,9 @@ namespace BetterFbx_FileExport
 			cancelButton.Text = "Cancel";
 			okButton.Text = "OK";
 
+			okButton.Click += OkButton_Click;
+			cancelButton.Click += CancelButton_Click;
+
 			TabControl tabControl = new TabControl();
 
 			TabPage formattingPage = new TabPage()
@@ -72,6 +75,17 @@ namespace BetterFbx_FileExport
 		private bool GetCheckboxValue(CheckBox checkBox)
 		{
 			return checkBox.Checked.HasValue ? checkBox.Checked.Value : false;
+		}
+
+		private void CancelButton_Click(object sender, EventArgs e)
+		{
+			this.Close(DialogResult.Cancel);
+		}
+
+		private void OkButton_Click(object sender, EventArgs e)
+		{
+			DialogToOptions();
+			this.Close(DialogResult.Ok);
 		}
 	}
 }
